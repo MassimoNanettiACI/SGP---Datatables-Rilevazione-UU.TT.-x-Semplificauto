@@ -1,0 +1,103 @@
+<script>
+// ****************** FUNZIONE CHE RENDERIZZA LA TABELLA FILTRATA CON IL PLUG_IN DATATABLES ****************************
+    function renderTable(){
+
+       $('#myTb').empty();
+
+        google.script.run
+        .withSuccessHandler(onReadData)
+        .readData()
+      }
+           
+      window.onReadData = function(dataObject){
+      
+        $(document).ready(function (){
+
+//          if(dataObject.indexEditor== 1){
+//            var myclassEdit = 'edit'
+//            }
+//          else 
+//          {
+//          var myclassEdit = 'not enable'
+//          }
+
+        
+        // ******* definisce la variabile "myTb" ***********************
+
+        var myTb = $('#myTb').DataTable({
+        
+          dom: 'Bfrltip',
+        
+        buttons: [
+               'copyHtml5',
+               'excelHtml5',
+             
+               {
+                extend: 'csvHtml5',
+                text: 'XLS',
+                orientation: 'landscape',
+                alignment: 'center',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4]
+                    }
+                },
+                {
+                extend: 'pdfHtml5',
+                text: 'PDF',
+                orientation: 'landscape',
+                alignment: 'center',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4]
+                    },
+                    styles: {
+                             layout: 'lightHorizontalLines',
+                             tableHeader:{
+                             fillColor:"#F0F8FF"
+                             },
+                    },
+                },
+              
+              ],
+              
+        columns: [
+        
+          { data: 'Modulo', title: "Modulo"},
+          { data: 'Dettagli', title: "Dettagli"},
+          { data: 'Funzionario', title: "Funzionario"},
+          { data: 'Ufficio Territoriale', title: "Data rilevazione"},
+          { data: 'Data rilevazione', title: "Foto"},
+          { data: 'email proprietario', title: "Editor"},
+        //  { data: 'Foto', title: "Foto"},
+                
+          ],
+          
+        columnDefs: [
+
+        { targets: '_all', visible: true },
+        { targets: [0], render: function ( data, type, row) {
+            if(data == ""){
+              return '<button class="btn btn-outline btn-warning waves-effect">Vuoto</button>'; }
+              else return '<a href='+data+' class="btn btn-outline btn-danger waves-effect" target="_blank">Modifica</a>';}
+              },
+        { targets: [1], render: function ( data, type, row) {
+            if(data == ""){
+              return '<button class="btn btn-outline btn-warning waves-effect">Vuoto</button>'; }
+              else return '<a href='+data+' class="btn btn-outline btn-info waves-effect" target="_blank">Dettagli</a>';}
+              },
+          ],
+          
+          data: dataObject.table,
+          responsive: true,
+          scrollCollapse: true,
+          scrollY: 400,
+          paging: true,
+          paginationType: 'full',
+          order: [[ 2, 'asc' ],[ 1, 'asc' ]],
+          displayLength: 25,
+          lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          autoWidth: true,
+          
+                })
+                });}
+  
+</script>
