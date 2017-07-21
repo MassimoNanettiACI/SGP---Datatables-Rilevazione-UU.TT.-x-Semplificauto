@@ -11,63 +11,35 @@
            
       window.onReadData = function(dataObject){
       
+//      console.log(JSON.stringify(dataObject))
         $(document).ready(function (){
-
-//          if(dataObject.indexEditor== 1){
-//            var myclassEdit = 'edit'
-//            }
-//          else 
-//          {
-//          var myclassEdit = 'not enable'
-//          }
-
         
         // ******* definisce la variabile "myTb" ***********************
 
         var myTb = $('#myTb').DataTable({
         
-          dom: 'Bfrltip',
+        dom: 'Bfrltip',
         
         buttons: [
-               'copyHtml5',
-               'excelHtml5',
-             
-               {
-                extend: 'csvHtml5',
-                text: 'XLS',
-                orientation: 'landscape',
-                alignment: 'center',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4]
-                    }
-                },
-                {
-                extend: 'pdfHtml5',
-                text: 'PDF',
-                orientation: 'landscape',
-                alignment: 'center',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4]
-                    },
-                    styles: {
-                             layout: 'lightHorizontalLines',
-                             tableHeader:{
-                             fillColor:"#F0F8FF"
-                             },
-                    },
-                },
-              
-              ],
+        
+               { text: 'Inserisci', action: function (e, dt, node, conf) { window.open('https://docs.google.com/a/aci.it/forms/d/1FAIpQLSfriiEbU_mRbucmkeBHw1juev-MepzVZpK1Gm-DLDTetXk37w/viewform', '_blank' );} },
+                'copyHtml5',                                                            
+                'excelHtml5',
+               { extend: 'csvHtml5', text: 'XLS', orientation: 'landscape', alignment: 'center', exportOptions: { columns: [ 0, 1, 2, 3, 4] } },
+               { extend: 'pdfHtml5', text: 'PDF', orientation: 'landscape', alignment: 'center', exportOptions: { columns: [ 0, 1, 2, 3, 4] }, 
+                   styles: { layout: 'lightHorizontalLines', tableHeader:{ fillColor:"#F0F8FF" }, }, },
+                ],
               
         columns: [
         
           { data: 'Modulo', title: "Modulo"},
           { data: 'Dettagli', title: "Dettagli"},
           { data: 'Funzionario', title: "Funzionario"},
-          { data: 'Ufficio Territoriale', title: "Data rilevazione"},
-          { data: 'Data rilevazione', title: "Foto"},
-          { data: 'email proprietario', title: "Editor"},
-        //  { data: 'Foto', title: "Foto"},
+          { data: 'Ufficio Territoriale', title: "Ufficio"},
+          { data: 'Data rilevazione', title: "Data Rilevazione"},
+          { data: 'email proprietario', title: "Email"},
+          { data: 'indexEditor', title: "Editor"},
+          { data: null, title: "Gallery", className: 'details-control', orderable: false, defaultContent: '' },
                 
           ],
           
@@ -84,6 +56,11 @@
               return '<button class="btn btn-outline btn-warning waves-effect">Vuoto</button>'; }
               else return '<a href='+data+' class="btn btn-outline btn-info waves-effect" target="_blank">Dettagli</a>';}
               },
+        { targets: [6], render: function ( data, type, row) {
+            if(data == 0){
+              return '<button class="btn btn-outline btn-warning waves-effect">NoEdit</button>'; }
+              else return '<a href='+ row.Modulo +' class="btn btn-outline btn-success waves-effect" target="_blank">Modifica</a>';}
+              },
           ],
           
           data: dataObject.table,
@@ -96,8 +73,57 @@
           displayLength: 25,
           lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
           autoWidth: true,
+          fixedColumns: { leftColumns: 2 }, 
           
-                })
-                });}
-  
+          
+          })
+          
+          // fine definizione variabile myTb
+                
+                
+//                
+//         // -------------------- chiamata di una funzione cliccando sul td.details-control ----------------------------
+//
+//              myTb.$('td.details-control').on('click', function () {
+//              console.log( 'Hai cliccato per chiamare la funzione gallery ');
+//                         
+//             // popola la variabile "row" con il contenuto del record selezionato
+//         // ------------------------            
+//             var tr = $(this).closest('tr');
+//
+//             var row = myTb.row( tr );
+//             
+//             gallery(row.data())
+//             
+//             tr.addClass('shown');
+//          // -----------------------
+//
+//             return false
+//             });
+//          //----------------------------------------------   
+//                
+          });
+        }
+                
+</script>
+
+<script>
+
+/* Formatting function for row details - modify as you need */
+function gallery ( d ) {
+
+    // `d` is the original data object for the row
+    
+    console.log('sei dentro Gallery')
+    console.log(d.indexEditor)
+    console.log(d.Modulo)
+    
+    if(d.indexEditor == 0){
+              console.log('... è uguale a 0')
+              return '<a href="#" class="btn btn-outline btn-warning waves-effect" target="_blank">Vuoto</a>' ; }
+              else {
+              console.log('... è uguale a 1')
+              return '<a href='+ d.Modulo +' class="btn btn-outline btn-info waves-effect" target="_blank">Dettagli</a>';}
+              }
+             
 </script>

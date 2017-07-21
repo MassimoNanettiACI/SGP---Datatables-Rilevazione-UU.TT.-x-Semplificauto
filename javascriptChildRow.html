@@ -1,0 +1,62 @@
+<script>
+// ***********************  funzione di formattazione delle Child Row *****************************
+// ------------da scrivere ---------------
+   function gallery ( d ) {  
+
+   // filtra le foto dell'ufficio  
+  
+   var filtro = d.filter (function (el) {
+       return (el['foto01'] == el['Ufficio Territoriale'] &&
+               el['foto02'] == el['Ufficio Territoriale'] &&
+               el['foto03'] == el['Ufficio Territoriale'] &&
+               el['piantina01'] == el['Ufficio Territoriale'] &&
+               ) 
+            })
+
+   if (filtro.length > 0) {
+    var indexEditor = 1
+   }
+
+// Logger.log(indexEditor)
+
+// ---------------------------------------------   
+   
+
+ console.log(d["Ufficio Territoriale"]);
+
+   if(d["foto01"] != ''){ console.log('OK1'); 
+   
+            var divChildRow = '<table class="table tbody display dataTable table-striped table-bordered'+
+            '<tr">'+
+            '<td><b>Foto 1:</b></td>'+
+            '<td>'+d['Foto01']+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td><b>Foto 2:</b></td>'+
+            '<td>'+d['Foto02']+'</td>'+
+            '</tr>'+
+            '<tr>'+            
+            '<td><b>Foto 3:</b></td>'+
+            '<td>'+d['Foto03']+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td><b>Piantina:</b></td>'+
+            '<td>'+d['Piantina01']+'</td>'+
+            '</tr>'+
+            '<tr>'+            
+            '<td><b>Note:</b></td>'+
+            '<td>'+d['Note01']+'</td>'+
+            '</tr>'+
+            '</table>';
+
+            }
+            else { console.log('Gallery Vuota');
+           
+            var divChildRow = '<table class="table tbody display dataTable table-striped table-bordered'+
+            '</table>';
+          
+            }
+//            console.log(divChildRow);
+            return divChildRow;
+       }
+</script>

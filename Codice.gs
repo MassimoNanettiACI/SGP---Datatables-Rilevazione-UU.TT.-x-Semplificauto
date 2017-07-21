@@ -25,12 +25,11 @@ var cols = sheet.getLastColumn()+1
 // Logger.log(cols);
 var headers = sheet.getRange(1,1,1,cols).getValues()
 // Logger.log(headers)
-var data = sheet.getRange(3,1,rows,cols).getValues()
+var data = sheet.getRange(2,1,rows,cols).getValues()
 // Logger.log(data)
 var currentUser = Session.getActiveUser().getEmail()
-// Logger.log(typeof(currentUser))
-var indexEditor = '0'
-// Logger.log(typeof(indexEditor))
+// Logger.log(currentUser)
+
 
 var dataObjectsArray = [] //Object con un Array di Objects
 
@@ -51,32 +50,32 @@ var dataObjects = {} // inizializza un object
       var existingDate = dataObjects['Data rilevazione'] 
       dataObjects['Data rilevazione'] = Utilities.formatDate(new Date(existingDate), "CET", "dd/MM/yyyy")
       dataObjectsArray.push(dataObjects)
-      Logger.log(dataObjects);
+//      Logger.log(dataObjects);
  
 }
   
 // ---------------------------------------------
 // controllo ruolo utente: viewer, editor, owner  
-  
-var filtro = dataObjectsArray.filter (function (el) {
-  return (el['Account'] == currentUser)
-  })
+// Logger.log(dataObjectsArray)  
 
-if (filtro.length > 0) {
-    var indexEditor = 1
-   }
+for (var i=0; i<dataObjectsArray.length; i++){
+  if(currentUser == dataObjectsArray[i]['email proprietario']){
+    dataObjectsArray[i].indexEditor = 1 ; 
+  }
+  else
+  {
+    dataObjectsArray[i].indexEditor = 0; 
+  }
+}
 
-// Logger.log(indexEditor)
-
+Logger.log(dataObjectsArray)
 // ---------------------------------------------
   
 var mainObject = {  // quando completa l'array di Object costruisce l'oggetto Contenitore
       user: currentUser,
-      indexEditor: indexEditor,
-      sendHangout: dataObjectsArray['Account'],
       table: dataObjectsArray,
     };
 
-  Logger.log(mainObject);
+ // Logger.log(mainObject);
  return mainObject  // il risultato viene restituito come Object e non come JSON stringify 
 }
